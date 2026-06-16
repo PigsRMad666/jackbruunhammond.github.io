@@ -1,0 +1,291 @@
+/*
+	Custom styles for jackbruun-hammond.com
+	Loaded AFTER main.css so these rules win.
+	Dark, near-monochrome theme + portfolio grid + project overlay.
+*/
+
+:root {
+	--bg:            #0f0f0f;   /* page background */
+	--bg-alt:        #161616;   /* cards / raised surfaces */
+	--bg-elevated:   #1c1c1c;   /* overlay panel */
+	--fg:            #ededed;   /* primary text */
+	--fg-dim:        #9a9a9a;   /* secondary text */
+	--fg-faint:      #6a6a6a;   /* tertiary / labels */
+	--line:          rgba(255,255,255,0.10);
+	--line-strong:   rgba(255,255,255,0.22);
+	--accent:        #ffffff;   /* swap this for a colour later if you want one */
+}
+
+/* ---------- Base dark overrides ---------- */
+html, body { background: var(--bg); }
+body, input, select, textarea { color: var(--fg); }
+
+h1, h2, h3, h4, h5, h6 { color: var(--fg); }
+
+a { color: var(--fg); border-bottom-color: var(--line-strong); }
+a:hover { color: var(--accent); }
+
+#wrapper > * { background: transparent; }
+
+/* Tame the template section background tints */
+#main > section, #banner, #contact, #footer, #about {
+	background-image: none;
+}
+
+/* ---------- Header / nav ---------- */
+#header {
+	background: rgba(15,15,15,0.85);
+	backdrop-filter: blur(8px);
+	border-bottom: 1px solid var(--line);
+}
+#header .logo { color: var(--fg); border-bottom: none; }
+#header .logo strong { color: var(--fg); }
+#header nav a { color: var(--fg-dim); }
+#header nav a:hover { color: var(--fg); }
+
+/* ---------- Hero / banner ---------- */
+#banner {
+	padding: 10em 0 7em 0;
+	border-bottom: 1px solid var(--line);
+}
+#banner h1 {
+	font-size: 3.25em;
+	line-height: 1.1;
+	letter-spacing: -0.015em;
+}
+#banner .content p { color: var(--fg-dim); }
+
+/* ---------- Section rhythm ---------- */
+.section-label {
+	display: block;
+	text-transform: uppercase;
+	letter-spacing: 0.25em;
+	font-size: 0.7em;
+	color: var(--fg-faint);
+	margin-bottom: 1.5em;
+}
+
+/* ---------- Portfolio grid ---------- */
+#portfolio { padding: 5em 0; }
+#portfolio-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.25em;
+}
+.pf-tile {
+	position: relative;
+	cursor: pointer;
+	overflow: hidden;
+	border: 1px solid var(--line);
+	border-radius: 4px;
+	background: var(--bg-alt);
+	aspect-ratio: 4 / 3;
+	outline: none;
+	transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.pf-tile:hover, .pf-tile:focus-visible {
+	border-color: var(--line-strong);
+	transform: translateY(-2px);
+}
+.pf-thumb { display: block; width: 100%; height: 100%; }
+.pf-thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.4s ease, opacity 0.3s ease;
+	opacity: 0.92;
+}
+.pf-tile:hover .pf-thumb img,
+.pf-tile:focus-visible .pf-thumb img {
+	transform: scale(1.04);
+	opacity: 1;
+}
+.pf-caption {
+	position: absolute;
+	left: 0; right: 0; bottom: 0;
+	padding: 1.5em 1.25em 1em;
+	background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
+}
+.pf-caption h3 {
+	margin: 0;
+	font-size: 1.1em;
+	color: #fff;
+}
+.pf-caption p {
+	margin: 0.15em 0 0;
+	font-size: 0.8em;
+	color: var(--fg-dim);
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+}
+
+/* ---------- Project overlay ---------- */
+.pf-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 11000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 3vh 4vw;
+	background: rgba(0,0,0,0.82);
+	backdrop-filter: blur(6px);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.pf-overlay.is-open { opacity: 1; visibility: visible; }
+body.pf-no-scroll { overflow: hidden; }
+
+.pf-panel {
+	position: relative;
+	width: 100%;
+	max-width: 1000px;
+	height: 94vh;
+	display: flex;
+	flex-direction: column;
+	background: var(--bg-elevated);
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	overflow: hidden;
+	transform: translateY(12px);
+	transition: transform 0.25s ease;
+}
+.pf-overlay.is-open .pf-panel { transform: translateY(0); }
+
+.pf-panel-header {
+	padding: 1.75em 2em 1.25em;
+	border-bottom: 1px solid var(--line);
+	flex: 0 0 auto;
+}
+.pf-panel-header h2 {
+	margin: 0;
+	font-size: 1.6em;
+	letter-spacing: -0.01em;
+}
+#pf-subtitle {
+	margin: 0.25em 0 0;
+	color: var(--fg-faint);
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	font-size: 0.72em;
+}
+#pf-desc {
+	margin: 1em 0 0;
+	color: var(--fg-dim);
+	max-width: 60ch;
+	font-size: 0.95em;
+}
+
+/* Scrolling image stack */
+.pf-images {
+	flex: 1 1 auto;
+	overflow-y: auto;
+	padding: 1.5em 2em 2em;
+	display: flex;
+	flex-direction: column;
+	gap: 1.25em;
+}
+.pf-images img {
+	width: 100%;
+	height: auto;
+	display: block;
+	border-radius: 4px;
+	background: var(--bg-alt);
+}
+
+/* Controls */
+.pf-close, .pf-nav {
+	position: absolute;
+	background: rgba(20,20,20,0.7);
+	border: 1px solid var(--line);
+	color: var(--fg);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+	z-index: 2;
+}
+.pf-close:hover, .pf-nav:hover {
+	background: rgba(40,40,40,0.95);
+	border-color: var(--line-strong);
+}
+.pf-close {
+	top: 1em; right: 1em;
+	width: 2.4em; height: 2.4em;
+	border-radius: 50%;
+	font-size: 1.2em;
+	line-height: 1;
+}
+.pf-nav {
+	top: 50%;
+	transform: translateY(-50%);
+	width: 3em; height: 3em;
+	border-radius: 50%;
+	font-size: 1.6em;
+	line-height: 1;
+}
+.pf-prev { left: -1.5em; }
+.pf-next { right: -1.5em; }
+#pf-counter {
+	position: absolute;
+	bottom: 1em; left: 50%;
+	transform: translateX(-50%);
+	font-size: 0.72em;
+	letter-spacing: 0.15em;
+	color: var(--fg-faint);
+	background: rgba(20,20,20,0.7);
+	padding: 0.4em 0.9em;
+	border-radius: 999px;
+	border: 1px solid var(--line);
+	z-index: 2;
+}
+
+/* ---------- About ---------- */
+#about { padding: 5em 0; border-top: 1px solid var(--line); }
+#about .about-grid {
+	display: grid;
+	grid-template-columns: 1fr 1.4fr;
+	gap: 3em;
+	align-items: start;
+}
+#about p { color: var(--fg-dim); }
+#about p strong { color: var(--fg); }
+
+/* ---------- Contact ---------- */
+#contact { border-top: 1px solid var(--line); }
+#contact input[type="text"],
+#contact input[type="email"],
+#contact textarea {
+	background: var(--bg-alt);
+	border: 1px solid var(--line);
+	color: var(--fg);
+}
+#contact label { color: var(--fg-dim); }
+
+/* ---------- Footer ---------- */
+#footer { border-top: 1px solid var(--line); }
+#footer .icons a { color: var(--fg-dim); }
+#footer .icons a:hover { color: var(--fg); }
+#footer .copyright { color: var(--fg-faint); }
+#footer .copyright a { color: var(--fg-dim); }
+
+/* ---------- Responsive ---------- */
+@media screen and (max-width: 980px) {
+	#portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+	#about .about-grid { grid-template-columns: 1fr; gap: 1.5em; }
+}
+@media screen and (max-width: 736px) {
+	#banner { padding: 7em 0 4em; }
+	#banner h1 { font-size: 2.4em; }
+	#portfolio-grid { grid-template-columns: 1fr; }
+	.pf-panel { height: 92vh; }
+	.pf-panel-header { padding: 1.25em 1.25em 1em; }
+	.pf-images { padding: 1em 1.25em 1.5em; }
+	/* Bring nav arrows inside on small screens */
+	.pf-prev { left: 0.5em; }
+	.pf-next { right: 0.5em; }
+	.pf-nav { width: 2.6em; height: 2.6em; font-size: 1.3em; }
+}
